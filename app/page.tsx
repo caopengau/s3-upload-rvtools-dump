@@ -16,8 +16,7 @@ export default function Page() {
 
     setUploading(true)
 
-    const response = await fetch(
-      process.env.NEXT_PUBLIC_BASE_URL + '/api/upload',
+    const response = await fetch('/api/upload',
       {
         method: 'POST',
         headers: {
@@ -67,7 +66,7 @@ export default function Page() {
               setFile(files[0])
             }
           }}
-          accept="image/png, image/jpeg"
+          accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
         />
         <button type="submit" disabled={uploading}>
           Upload

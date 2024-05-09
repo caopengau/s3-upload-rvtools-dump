@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
 export default function Page() {
@@ -68,9 +69,9 @@ export default function Page() {
           }}
           accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
         />
-        <button type="submit" disabled={uploading}>
+        <Button type="submit" disabled={uploading}>
           Upload
-        </button>
+        </Button>
       </form>
     </main>
   )

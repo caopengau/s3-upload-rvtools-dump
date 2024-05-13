@@ -4,11 +4,11 @@ import Link from "next/link"
 import { CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { SelectValue, SelectTrigger, SelectLabel, SelectItem, SelectGroup, SelectContent, Select } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 
 import { useState } from "react"
-import { Space } from "lucide-react"
+
+import { constructTagging } from "./util"
 
 export default function Component() {
 
@@ -25,28 +25,34 @@ export default function Component() {
 
     setUploading(true)
 
+    const tagSets = {
+      firstName: (e.currentTarget.elements.namedItem('firstName') as HTMLInputElement).value,
+      lastName: (e.currentTarget.elements.namedItem('lastName') as HTMLInputElement).value
+    }
+
     const response = await fetch('/api/upload',
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ filename: file.name, contentType: file.type }),
+        body: JSON.stringify({ filename: file.name, contentType: file.type, tagSets }),
       }
     )
 
     if (response.ok) {
       const { url, fields } = await response.json()
-
       const formData = new FormData()
       Object.entries(fields).forEach(([key, value]) => {
         formData.append(key, value as string)
       })
+      formData.append('Tagging', constructTagging(tagSets))
+      
       formData.append('file', file)
 
       const uploadResponse = await fetch(url, {
         method: 'POST',
-        body: formData,
+        body: formData
       })
 
       if (uploadResponse.ok) {
@@ -94,12 +100,12 @@ export default function Component() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="first-name">First name</Label>
-                    <Input id="first-name" placeholder="John" required />
+                    <Label htmlFor="firstName">First name</Label>
+                    <Input id="firstName" placeholder="John" required />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="last-name">Last name</Label>
-                    <Input id="last-name" placeholder="Doe" required />
+                    <Label htmlFor="lastName">Last name</Label>
+                    <Input id="lastName" placeholder="Doe" required />
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -112,8 +118,6 @@ export default function Component() {
             <CardContent>
               <h1 className="text-2xl font-bold">Upload a File to S3</h1>
               <div className="flex justify-center">
-
-
                 <input
                   id="file"
                   type="file"

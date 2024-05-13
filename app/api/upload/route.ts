@@ -11,9 +11,9 @@ export async function POST(request: Request) {
       Bucket: process.env.AWS_BUCKET_NAME!,
       // This is the filename that will be used in the S3 bucket
       // Need to confirm with the user that this is the desired behavior
-      Key: filename,
+      // Key: filename,
       // if not using filename, use uuidv4() to generate a unique key to prevent overwriting
-      // Key: uuidv4(),
+      Key: uuidv4(),
 
       Conditions: [
         ['content-length-range', 0, 10485760], // up to 10 MB

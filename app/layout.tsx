@@ -1,8 +1,8 @@
 import './globals.css'
 
 export const metadata = {
-  title: 'Next.js',
-  description: 'AWS S3 Upload Example',
+  title: 'RVTools AWS S3 Upload',
+  description: 'a Zip File Upload Management Portal',
 }
 
 export default function RootLayout({

@@ -4,11 +4,12 @@ import Link from "next/link"
 import { CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 
 import { useState } from "react"
 
 import { constructTagging } from "./util"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
 
 export default function Component() {
 
@@ -27,7 +28,10 @@ export default function Component() {
 
     const tagSets = {
       firstName: (e.currentTarget.elements.namedItem('firstName') as HTMLInputElement).value,
-      lastName: (e.currentTarget.elements.namedItem('lastName') as HTMLInputElement).value
+      lastName: (e.currentTarget.elements.namedItem('lastName') as HTMLInputElement).value,
+      email: (e.currentTarget.elements.namedItem('email') as HTMLInputElement).value,
+      accountManager: (e.currentTarget.elements.namedItem('accountManager') as HTMLInputElement).value,
+      phone: (e.currentTarget.elements.namedItem('phone') as HTMLInputElement).value,
     }
 
     const response = await fetch('/api/upload',
@@ -47,7 +51,7 @@ export default function Component() {
         formData.append(key, value as string)
       })
       formData.append('Tagging', constructTagging(tagSets))
-      
+
       formData.append('file', file)
 
       const uploadResponse = await fetch(url, {
@@ -70,11 +74,13 @@ export default function Component() {
 
   return (
     <div className="flex flex-col h-screen">
-      <nav className="bg-gray-800 p-4">
+      <nav className="bg-[#FEC40E] p-4 text-black">
         <div className="container mx-auto flex justify-between items-center">
-          <div className="text-white font-bold text-xl">Company Logo</div>
+          <Image src="/assets/logo.svg" alt="Logo"
+            width={100}
+            height={50} />
           <div className="flex space-x-4">
-            <Link href="#">
+            {/* <Link href="#">
               <LayoutDashboardIcon className="h-4 w-4" />
               <span className="sr-only">Dashboard</span>
             </Link>
@@ -85,7 +91,7 @@ export default function Component() {
             <Link href="#">
               <SettingsIcon className="h-4 w-4" />
               <span className="sr-only">Settings</span>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </nav>
@@ -101,7 +107,7 @@ export default function Component() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">First name</Label>
-                    <Input id="firstName" placeholder="John" required />
+                    <Input id="firstName" placeholder="John" required defaultValue={''} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="lastName">Last name</Label>
@@ -110,13 +116,21 @@ export default function Component() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" placeholder="johndoe@example.com" required type="email" />
+                  <Input id="email" placeholder="johndoe@example.com" required type="email" defaultValue={''} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="accountManager">Account Manager</Label>
+                  <Input id="accountManager" placeholder="John Doe" required defaultValue={''} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input id="phone" placeholder="04xxxxxxxx" required defaultValue={''} />
                 </div>
               </div>
             </CardContent>
 
             <CardContent>
-              <h1 className="text-2xl font-bold">Upload a File to S3</h1>
+              <h1 className="text-2xl font-bold">Pick a File</h1>
               <div className="flex justify-center">
                 <input
                   id="file"
@@ -140,8 +154,8 @@ export default function Component() {
           </Card>
         </form>
       </div>
-      <footer className="bg-gray-800 p-4 text-center text-white">
-        <p>© 2023 Company Name. All rights reserved.</p>
+      <footer className="bg-[#FEC40E] p-4 text-center text-black">
+        <p>© 2024 V2 Digital. All rights reserved.</p>
       </footer>
     </div>
   )
